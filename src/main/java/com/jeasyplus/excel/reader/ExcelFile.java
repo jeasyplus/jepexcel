@@ -29,14 +29,40 @@ public class ExcelFile {
     }
 
     public static void next(String path, RowDataCallback callback) throws IOException {
-        next(path,0,callback);
+        next(path, callback, 0);
     }
 
-    public static void next(String path,int sheetAt, RowDataCallback callback) throws IOException {
+
+    public static void next(String path, int sheetAt, RowDataCallback callback) throws IOException {
+        next(path, sheetAt, callback, 0);
+    }
+
+    public static void next(String path, int sheetAt, RowDataCallback callback,int startRowNum) throws IOException {
+        next(path, sheetAt, callback, startRowNum,0);
+    }
+
+    public static void next(String path, RowDataCallback callback,int startRowNum) throws IOException {
+        next(path,  callback,startRowNum,0);
+    }
+
+    public static void next(String path, RowDataCallback callback,int startRowNum,int endRowNum) throws IOException {
+        next(path, 0, callback,startRowNum,endRowNum);
+    }
+
+    public static void next(String path, int sheetAt, RowDataCallback callback, int startRowNum,int endRowNum) throws IOException {
         Workbook workbook = workbook(path);
         Sheet sheet = workbook.getSheetAt(sheetAt);
         int firstRowNum = sheet.getFirstRowNum();
         int lastRowNum = sheet.getLastRowNum();
+        if(firstRowNum == lastRowNum){
+            throw new RuntimeException("sheet is empty");
+        }
+        if (startRowNum > 0) {
+            firstRowNum = startRowNum;
+        }
+        if(endRowNum > 0){
+            lastRowNum = endRowNum;
+        }
         for (int rowIndex = firstRowNum; rowIndex < lastRowNum; rowIndex++) {
             Row row = sheet.getRow(rowIndex);
             Boolean next = callback.call(row);
@@ -47,14 +73,29 @@ public class ExcelFile {
     }
 
     public static void row(String path, RowCallback callback) throws IOException {
-        row(path,0,callback);
+        row(path, 0, callback);
     }
 
     public static void row(String path, int sheetAt, final RowCallback callback) throws IOException {
-        next(path,sheetAt,row ->{
+        next(path, sheetAt, row -> {
             callback.call(row);
             return true;
         });
+    }
+
+    public static void row(String path, final RowCallback callback, int startRowNum) throws IOException {
+      row(path,0,callback,startRowNum);
+    }
+
+    public static void row(String path, int sheetAt, final RowCallback callback, int startRowNum) throws IOException {
+        row(path,sheetAt,callback,startRowNum,-1);
+    }
+
+    public static void row(String path, int sheetAt, final RowCallback callback, int startRowNum,int endRowNum) throws IOException {
+        next(path, sheetAt, row -> {
+            callback.call(row);
+            return true;
+        }, startRowNum,endRowNum);
     }
 
 }

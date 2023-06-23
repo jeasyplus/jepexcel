@@ -9,6 +9,9 @@ import static org.apache.poi.ss.usermodel.CellType.*;
 public class CellReader {
 
     public static String toString(Row row, int cell){
+        if(row == null){
+            return null;
+        }
         return toString(row.getCell(cell));
     }
 
@@ -21,6 +24,9 @@ public class CellReader {
     }
 
     public static Object value(Row row,int cell){
+        if(row == null){
+            return null;
+        }
         return value(row.getCell(cell));
     }
 
@@ -64,6 +70,9 @@ public class CellReader {
     }
 
     public static Object value(Cell cell){
+        if(cell == null){
+            return null;
+        }
         CellType cellType = cell.getCellType();
         if(STRING.equals(cellType)){
             return cell.getStringCellValue();

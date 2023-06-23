@@ -29,12 +29,15 @@ public class JepExcelTest {
      * @throws IOException
      */
     public void readData() throws IOException {
-        ExcelFile.row("/Users/jepExcel/data.xlsx", row->{
+        ExcelFile.row("/Users/jepExcel/1654157465882063.xlsx", row->{
+            if(row == null){
+                return;
+            }
             int rowNum = row.getRowNum();
             System.out.println(rowNum);
             System.out.println(CellReader.value(row,2));
             System.out.println(CellReader.toString(row,2));
-        });
+        },6);
     }
 
     /**
@@ -42,12 +45,12 @@ public class JepExcelTest {
      * @throws IOException
      */
     public void readLine() throws IOException {
-        ExcelFile.next("/Users/jepExcel/data.xlsx", row->{
+        ExcelFile.next("/Users/jepExcel/1654157465882063.xlsx",1, row->{
             System.out.println(CellReader.value(row,2));
             System.out.println(CellReader.toString(row,2));
             //当返回false时，停止读取数据
-            return false;
-        });
+            return row != null;
+        },8);
     }
 
     /**
@@ -57,7 +60,7 @@ public class JepExcelTest {
     public void createData() throws IOException {
         //创建excel对象
         ExcelObj excelObj = ExcelObj.create("/Users/jepExcel/list.xlsx");
-        // //指定sheet
+        //指定sheet
         excelObj.sheet("测试sheet");
         //设置每行数据
         excelObj.row(Arrays.asList("lee",18,"歌手"));
@@ -69,6 +72,14 @@ public class JepExcelTest {
         excelObj.row(Arrays.asList("lee",28,"艺术家","画画"));
         excelObj.row(Arrays.asList("rain",38,"工人","生成产品"));
         excelObj.row(Arrays.asList("seven",38,"农民","种庄稼"));
+
+        excelObj.sheet("测试sheet");
+        excelObj.row(Arrays.asList("seven",38,"农民","也参与种庄稼"));
+        excelObj.row(Arrays.asList("rain",38,"工人","也参与生成产品"));
+
+        excelObj.sheet("测试sheet2");
+        excelObj.row(Arrays.asList("lee",18,"也参与画画"));
+
         //生成excel
         excelObj.writer();
     }
@@ -106,9 +117,9 @@ public class JepExcelTest {
         List<Book> bookList2 = new ArrayList<>();
         bookList2.add(new Book("原则",350));
         bookList2.add(new Book("高效能人的7个习惯",800));
-
+        int sheetAt = 1;
         ExcelTemplate.fill(
-                new DataContext(0,bookList).add(1,bookList2),
+                new DataContext(0,bookList).add(sheetAt,bookList2),
                 //注册两个数据类型转换器
                 DataConverter.create()
                         .add(new LocalDateConverter())
@@ -124,6 +135,8 @@ public class JepExcelTest {
      */
     private void replace() throws IOException {
         //replace方法重载了多个参数，如：是否需要关闭输出流，默认：关闭
+        //最多处理完多少行后就结束
+        int maxRowNum = 12;
         ExcelReplace.replace(
                 FileLoader.getInputStream("/Users/jepExcel/template.xlsx"),
                 FileWriter.getOutStream("/Users/jepExcel/report.xlsx"),

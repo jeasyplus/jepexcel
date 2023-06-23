@@ -6,6 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelObj {
@@ -16,12 +17,13 @@ public class ExcelObj {
 
     private Workbook workbook;
 
-    private Sheet sheet;
+    private SheetMeta sheetMeta;
 
-    private int rowNum;
+    private List<SheetMeta> sheetMetaList;
+
 
     public static ExcelObj create(String path) throws FileNotFoundException {
-       return new ExcelObj(path);
+        return new ExcelObj(path);
     }
 
 
@@ -31,18 +33,37 @@ public class ExcelObj {
         }
         this.path = path;
         workbook = new XSSFWorkbook();
-        sheetAt = -1;
+        sheetAt = 0;
+        sheetMetaList = new ArrayList<>();
     }
 
     public ExcelObj sheet(String sheetName) {
-        sheet = workbook.createSheet(sheetName);
-        rowNum = 0;
-        sheetAt++;
+        SheetMeta sheetMetaObj = getSheetMeta(sheetName);
+        if(sheetMetaObj != null){
+            sheetMeta = sheetMetaObj;
+            return this;
+        }
+        Sheet sheet = workbook.createSheet(sheetName);
+        sheetMeta = new SheetMeta(sheetAt++, sheetName, 0, sheet);
+        sheetMetaList.add(sheetMeta);
         return this;
     }
 
+    private SheetMeta getSheetMeta(String sheetName) {
+        if (sheetName == null || sheetMetaList == null || sheetMetaList.isEmpty()) {
+            return null;
+        }
+        for (SheetMeta meta : sheetMetaList) {
+            if(sheetName.equals(meta.getSheetName())){
+                return meta;
+            }
+        }
+        return null;
+    }
+
     public void row(List rowData) {
-        Row row = sheet.createRow(rowNum++);
+        Sheet sheet = sheetMeta.getSheet();
+        Row row = sheet.createRow(sheetMeta.rowNum());
         if (rowData == null || rowData.isEmpty()) {
             return;
         }
@@ -53,7 +74,7 @@ public class ExcelObj {
     }
 
     public void writer() throws IOException {
-        try(FileOutputStream out = new FileOutputStream(path)) {
+        try (FileOutputStream out = new FileOutputStream(path)) {
             workbook.write(out);
         }
     }
