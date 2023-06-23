@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jeasyplus</groupId>
 	<artifactId>jepexcel</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>jepexcel</name>
 	<description>jepexcel is a simple excel operations catering to basic requirements.</description>
 	<url>https://github.com/jeasyplus/jepexcel</url>

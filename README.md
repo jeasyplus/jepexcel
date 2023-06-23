@@ -16,7 +16,7 @@ jepExcel 是一个用于简化对 Apache POI 和 Alibaba easyExcel 的复杂 API
 <dependency>
     <groupId>com.jeasyplus</groupId>
     <artifactId>jepexcel</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
