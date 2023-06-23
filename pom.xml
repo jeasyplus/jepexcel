@@ -5,8 +5,28 @@
 	<groupId>com.jeasyplus</groupId>
 	<artifactId>jepexcel</artifactId>
 	<version>1.0.0</version>
-	<name>jepExcel</name>
-	<description>project for excel</description>
+	<name>jepexcel</name>
+	<description>jepexcel is a simple excel operations catering to basic requirements.</description>
+	<url>https://github.com/jeasyplus/jepexcel</url>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:https://github.com/jeasyplus/jepexcel.git</connection>
+		<url>https://github.com/jeasyplus/jepexcel</url>
+	</scm>
+	<developers>
+		<developer>
+			<id>yonghui</id>
+			<name>yonghui</name>
+			<email>xyhui321@gmail.com</email>
+		</developer>
+	</developers>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -58,6 +78,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9.1</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
