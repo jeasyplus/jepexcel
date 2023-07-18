@@ -1,6 +1,8 @@
 # jepExcel - JavaEasyPlusExcel
 
-jepExcel 是一个用于简化对 Apache POI 和 Alibaba easyExcel 的复杂 API 进行包装的 Java Excel 操作项目。它旨在方便处理一些需求简单的场景。
+简化 Apache POI 和 Alibaba easyExcel 操作。
+
+旨在应对一些简单应用的场景。
 
 ## 功能特性
 
