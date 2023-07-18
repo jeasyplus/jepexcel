@@ -2,7 +2,7 @@
 
 简化 Apache POI 和 Alibaba easyExcel 操作。
 
-旨在应对一些简单应用的场景。
+旨在应对一些简单应用场景。
 
 ## 功能特性
 
